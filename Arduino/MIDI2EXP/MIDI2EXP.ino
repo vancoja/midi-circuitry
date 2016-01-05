@@ -15,6 +15,9 @@
 // the address of the expression pot
 #define EXP_ADDRESS 0
 
+// 4 or 6 per IC?
+#define MAX_POT_NR 6
+
 MIDI_CREATE_DEFAULT_INSTANCE();
 
 void setup() {
@@ -34,7 +37,9 @@ void loop() {
 
 void controlChangeHandler(byte channel, byte number, byte value) {
 	analogWrite(LED_PIN, value * 2);
-	digitalPotWrite(EXP_ADDRESS, value * 2);
+  if (number < MAX_POT_NR) {
+	  digitalPotWrite(number, value * 2);
+  }
 }
 
 void digitalPotWrite(int address, int value) {
