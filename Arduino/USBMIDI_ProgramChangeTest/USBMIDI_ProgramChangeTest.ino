@@ -11,7 +11,6 @@
 #include <SPI.h>
 #endif
 
-MIDI_CREATE_DEFAULT_INSTANCE();
 USB UsbHost;
 USBH_MIDI UsbMidi(&UsbHost);
 
@@ -20,20 +19,22 @@ void setup() {
 	if (UsbHost.Init() == -1) {
 		while(1); 
 	}
-	// initialize MIDI
-	MIDI.begin(MIDI_CHANNEL_OMNI);
+ Serial.begin(9600);
+ Serial.println("USB Host Connected");
 }
 
 void loop() {
 	uint8_t data[2];
 	UsbHost.Task();
 	if (UsbHost.getUsbTaskState() == USB_STATE_RUNNING) {
-		if (MIDI.read()) {
-			data[0] = MIDI.getType();
-			if (data[0] == midi::ProgramChange) {
-				data[1] = MIDI.getData1();
-				UsbMidi.SendData(data, 0);
-			}
+    Serial.println("USB Host Running");
+    for (byte i = 0; i < 10; ++i) {
+			data[0] = midi::ProgramChange;
+			data[1] = i;
+      Serial.print("Sending ProgramChange ");
+      Serial.println(i);
+			UsbMidi.SendData(data, 0);
+      delay(2000);
 		}
 	}
 }
