@@ -1,3 +1,5 @@
+// Uses USB Host Shield
+// https://www.circuitsathome.com/usb-host-shield-hardware-manual
 // Requires USB MIDI class driver for Arduino USB Host Shield 2.0 Library
 // https://github.com/YuuichiAkagawa/USBH_MIDI
 
