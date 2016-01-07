@@ -21,33 +21,33 @@
 MIDI_CREATE_DEFAULT_INSTANCE();
 
 void setup() {
-	// set the slaveSelectPin as an output
-	pinMode(SLAVE_SELECT_PIN, OUTPUT);
-	// initialise SPI
-	SPI.begin(); 
-	// initialise MIDI, only listen on defined channel
-	MIDI.begin(EXP_CHANNEL);
-	// set handler for CC messages
-	MIDI.setHandleControlChange(controlChangeHandler);
+  // set the slaveSelectPin as an output
+  pinMode(SLAVE_SELECT_PIN, OUTPUT);
+  // initialise SPI
+  SPI.begin();
+  // initialise MIDI, only listen on defined channel
+  MIDI.begin(EXP_CHANNEL);
+  // set handler for CC messages
+  MIDI.setHandleControlChange(controlChangeHandler);
 }
 
 void loop() {
-	MIDI.read();
+  MIDI.read();
 }
 
 void controlChangeHandler(byte channel, byte number, byte value) {
-	analogWrite(LED_PIN, value * 2);
+  analogWrite(LED_PIN, value * 2);
   if (number < MAX_POT_NR) {
-	  digitalPotWrite(number, value * 2);
+    digitalPotWrite(number, value * 2);
   }
 }
 
 void digitalPotWrite(int address, int value) {
-	// take the SS pin low to select the chip
-	digitalWrite(SLAVE_SELECT_PIN, LOW);
-	// send in the address and value via SPI
-	SPI.transfer(address);
-	SPI.transfer(value);
-	// take the SS pin high to de-select the chip
-	digitalWrite(SLAVE_SELECT_PIN, HIGH); 
+  // take the SS pin low to select the chip
+  digitalWrite(SLAVE_SELECT_PIN, LOW);
+  // send in the address and value via SPI
+  SPI.transfer(address);
+  SPI.transfer(value);
+  // take the SS pin high to de-select the chip
+  digitalWrite(SLAVE_SELECT_PIN, HIGH);
 }
